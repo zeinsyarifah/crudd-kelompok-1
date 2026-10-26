@@ -40,4 +40,12 @@ public function update(Request $request, Buku $buku)
     return redirect()->route('bukus.index')
         ->with('success', 'Buku berhasil diperbarui.');
 }
+public function destory(Buku $buku)
+{
+    $buku->delete();
+
+    return redirect()->route('bukus.index')
+    ->with('success', 'Buku berhasil dihapus.');
+
+}
 }
