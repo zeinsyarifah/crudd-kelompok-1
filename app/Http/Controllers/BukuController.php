@@ -20,32 +20,55 @@ class BukuController extends Controller
 
     public function store(Request $request)
     {
-        Buku::create($request->all());
-        return redirect()->route('bukus.index')->with('success', 'Buku berhasil ditambahkan.');
+        $validated = $request->validate([
+            'kode_buku' => 'required|string|max:20|unique:bukus,kode_buku',
+            'judul' => 'required|string|max:255',
+            'kategori' => 'required|string|max:100',
+            'penulis' => 'required|string|max:255',
+            'tahun_terbit' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'jumlah' => 'required|integer|min:0',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        Buku::create($validated);
+
+        return redirect()->route('bukus.index')
+            ->with('success', 'Buku berhasil ditambahkan.');
     }
 
-    public function show(string $id)
+    public function show(Buku $buku)
     {
-        //
+        return redirect()->route('bukus.edit', $buku->id);
     }
+
     public function edit(Buku $buku)
-{
-    return view('bukus.edit', compact('buku'));
-}
+    {
+        return view('bukus.edit', compact('buku'));
+    }
 
-public function update(Request $request, Buku $buku)
-{
-    $buku->update($request->all());
+    public function update(Request $request, Buku $buku)
+    {
+        $validated = $request->validate([
+            'kode_buku' => 'required|string|max:20|unique:bukus,kode_buku,' . $buku->id,
+            'judul' => 'required|string|max:255',
+            'kategori' => 'required|string|max:100',
+            'penulis' => 'required|string|max:255',
+            'tahun_terbit' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'jumlah' => 'required|integer|min:0',
+            'keterangan' => 'nullable|string',
+        ]);
 
-    return redirect()->route('bukus.index')
-        ->with('success', 'Buku berhasil diperbarui.');
-}
-public function destory(Buku $buku)
-{
-    $buku->delete();
+        $buku->update($validated);
 
-    return redirect()->route('bukus.index')
-    ->with('success', 'Buku berhasil dihapus.');
+        return redirect()->route('bukus.index')
+            ->with('success', 'Buku berhasil diperbarui.');
+    }
 
-}
+    public function destroy(Buku $buku)
+    {
+        $buku->delete();
+
+        return redirect()->route('bukus.index')
+            ->with('success', 'Buku berhasil di hapus.');
+    }
 }

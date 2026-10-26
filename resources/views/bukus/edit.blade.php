@@ -1,39 +1,25 @@
-<h1>Edit Buku</h1>
+@extends('components.layout.app.app')
 
-<form action="{{ route('bukus.update', $buku->id) }}" method="POST">
-    @csrf
-    @method('PUT')
-    <p>
-        <label>Kode Buku:</label>
-        <input type="text" name="kode_buku" value="{{ $buku->kode_buku }}">
-    </p>
-    <p>
-        <label>Judul:</label>
-        <input type="text" name="judul" value="{{ $buku->judul }}">
-    </p>
-    <p>
-        <label>Kategori:</label>
-        <input type="text" name="kategori" value="{{ $buku->kategori }}">
-    </p>
-    <p>
-        <label>Penulis:</label>
-        <input type="text" name="penulis" value="{{ $buku->penulis }}">
-    </p>
-    <p>
-        <label>Tahun Terbit:</label>
-        <input type="number" name="tahun_terbit" value="{{ $buku->tahun_terbit }}">
-    </p>
-    <p>
-        <label>Jumlah:</label>
-        <input type="number" name="jumlah" value="{{ $buku->jumlah }}">
-    </p>
-    <p>
-        <label>Keterangan:</label>
-        <textarea name="keterangan" rows="3">{{ $buku->keterangan }}</textarea>
-    </p>
-    <button type="submit">Simpan</button>
-</form>
+@section('content')
+<div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0 text-dark">Edit Buku</h3>
+            <a href="{{ route('bukus.index') }}" class="btn btn-secondary">
+                Kembali ke Daftar Buku
+            </a>
+        </div>
 
-<p>
-    <a href="{{ route('bukus.index') }}">Kembali ke Buku</a>
-</p>
+        <form action="{{ route('bukus.update', $buku->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            @include('bukus.form', ['buku' => $buku])
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-warning text-white px-4 fw-semibold">Simpan Perubahan</button>
+                <a href="{{ route('bukus.index') }}" class="btn btn-outline-secondary">Batal</a>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
