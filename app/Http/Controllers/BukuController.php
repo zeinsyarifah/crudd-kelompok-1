@@ -28,4 +28,16 @@ class BukuController extends Controller
     {
         //
     }
+    public function edit(Buku $buku)
+{
+    return view('bukus.edit', compact('buku'));
+}
+
+public function update(Request $request, Buku $buku)
+{
+    $buku->update($request->all());
+
+    return redirect()->route('bukus.index')
+        ->with('success', 'Buku berhasil diperbarui.');
+}
 }
