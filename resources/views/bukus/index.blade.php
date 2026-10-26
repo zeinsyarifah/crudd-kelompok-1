@@ -1,18 +1,19 @@
+@extends('components.layout.app.app')
+@section('content')
+<div class="container mt -4">
 <h1>Daftar Buku</h1>
 
 <p>
     <a href="{{ route('bukus.create') }}">Tambah Buku</a>
 </p>
-
-@session('success')
-    <p style="color: green;">
+@if(session('success'))
+    <div class="alert alert-success">
         {{ session('success') }}
-    </p>
-@endsession
-
-<table border="1" cellpadding="8" cellspacing="0">
+    </div>
+@endif
+        <table class="table table-bordered table-striped">
+            <tr>
     <thead>
-        <tr>
             <th>No</th>
             <th>Kode</th>
             <th>Judul</th>
@@ -45,3 +46,4 @@
         @endforeach
     </tbody>
 </table>
+@endsection
